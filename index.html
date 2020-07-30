@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <title>COMENTARIOS</title>
+</head>
+
+
+
+<body style="background-color: rgb(40, 41, 54);">
+    <div id="app"></div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            template: `
+        <div class="container" >
+        <h1  style="color: rgb(37, 193, 85);">Controle de Validade</h1>
+        <hr/>
+        <div class="form-todo form-group">
+            <p>
+                
+                <input v-model="name" v-on:keyup.enter="addComment" placeholder="Nome do Produto" type="text" name="Produto" class="form-control" />
+            </p>
+
+            <p>
+                <input v-model="validade" v-on:keyup.enter="addComment" placeholder="Data de Vencimento" type="text" name="Data de Vencimento" class="form-control" />
+            </p>
+
+            <p>
+                <input v-model="quantidade" v-on:keyup.enter="addComment" placeholder="Quantidade" type="number" name="quantidade" class="form-control" />
+            </p>
+
+            <p>
+                <label  for="exampleFormControlTextarea1" style="color:white "> <strong> Descrição do produto </strong></label>
+                <textarea v-model="message" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </p>
+            <button v-on:click="addComment"  type="button" class="btn btn-primary" style="color:white "><strong> Cadastrar </strong></button>
+        </div>
+
+        <div class="list-group" style="margin-bottom: 22px">
+            
+            
+            <div class="list-group-item"   v-for="(comment, index) in allComments"
+                style="position: relative;
+                display: block;
+                padding: 8px;
+                background-color: #fff;
+                border: 12px solid rgba(40,41,54);"   >
+                
+                <span class="comment_author" style="margin-bottom: 22px">Produto: <strong>{{comment.name }}</strong></span>
+                <hr>
+
+                <p> Quantidade: <strong>{{ comment.quantidade }}</strong></p>
+                    <hr>
+                <p> Validade: <strong>{{ comment.validade }}</strong></p>
+                    <hr>
+                <p>{{ comment.message}}</p>
+                
+                <div>
+                    <a href="#" title="Excluir" v-on:click.prevent='removerComment(index)'>Excluir</a>
+                </div>
+                
+                
+            </div>
+            
+        </div>
+       <hr />
+    </div>
+    
+    `,
+
+            data() {
+                return {
+                    comments: [],
+                    name: '',
+                    quantidade:'',
+                    validade:"",
+                    message:''
+                    
+                }
+               
+            },
+            methods: {
+
+                    
+                    addComment() {
+                       
+                       if(/*this.name.trim() === '' || */   this.message.trim() === ''){
+                            return alert('preencha todos os campos para comentar')
+                       }
+
+                      
+                      
+  
+                        this.comments.push({
+                            name: this.name,
+                            message: this.message,
+                            quantidade: this.quantidade,
+                            validade: this.validade
+                        });
+                       
+                        this.name ='';
+                        this.message = '';
+                        this.quantidade = '';
+                        this.validade ="";
+                    },
+                    removerComment(index){
+                        this.comments.splice(index,1)
+                    }   
+
+
+             },
+             computed:{
+                 allComments(){
+                     return this.comments.map(comment => ({
+                         ...comment,
+                         name: comment.name.trim() === '' ? 'Anônimo' : comment.name
+                     })) 
+                 }
+             },
+             
+        })
+    </script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
